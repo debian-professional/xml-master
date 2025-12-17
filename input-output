@@ -1,0 +1,263 @@
+<input_structure version="1.3">
+    <!-- ===================== -->
+    <!-- Input Prompt          -->
+    <!-- Format : XML          -->
+    <!-- Version: 1.3          -->
+    <!-- Datum: 17.12.2025     -->
+    <!-- ===================== -->
+
+    <task_definition>
+        <goal>
+            <primary>Definieren Sie das primäre Ziel der Anfrage (Was soll konkret erreicht/erzeugt werden?)</primary>
+            <rationale>Warum ist dieses Ziel wichtig? (Kontext für bessere Priorisierung)</rationale>
+        </goal>
+        <context>
+            <background>Hintergrundinformationen, Projektrahmen, relevante Vorgeschichte</background>
+            <current_situation>Ausgangslage oder Problemstellung</current_situation>
+            <constraining_factors>Einschränkende Rahmenbedingungen (Zeit, Budget, Ressourcen)</constraining_factors>
+        </context>
+        <target_audience>
+            <primary>Primäre Zielgruppe (z.B. Fachabteilung, Management)</primary>
+            <secondary>Sekundäre Leser (z.B. Querschnittsfunktionen)</secondary>
+            <knowledge_level>Vorwissen der Zielgruppe (Anfänger, Fortgeschrittene, Experten)</knowledge_level>
+            <expectations>Was erwartet die Zielgruppe von der Antwort?</expectations>
+        </target_audience>
+    </task_definition>
+
+    <content_specification>
+        <required_elements>
+            <element type="core">Kernaussage oder Hauptthese</element>
+            <element type="supporting">Wichtige unterstützende Argumente oder Fakten</element>
+            <element type="structural">Gewünschte Strukturelemente (z.B. Vergleich, Schritt-für-Schritt-Anleitung)</element>
+            <!-- Weitere Elemente nach Bedarf hinzufügen -->
+        </required_elements>
+        <sources_and_references>
+            <mandatory_sources>Zu berücksichtigende Quellen (URLs, Dokumente, Standards)</mandatory_sources>
+            <citation_style>Zitierformat (z.B. APA, IEEE, keines)</citation_style>
+            <recency>Maximales Alter der Quellen (z.B. nach 2020)</recency>
+        </sources_and_references>
+        <perspective>
+            <angle>Betrachtungswinkel (z.B. kritisch, pragmatisch, visionär)</angle>
+            <bias_to_avoid>Vermeidbare Verzerrungen (z.B. zu marketinglastig, zu technisch)</bias_to_avoid>
+        </perspective>
+    </content_specification>
+
+    <stylistic_parameters>
+        <tone>
+            <primary>Grundton (z.B. sachlich, überzeugend, neutral)</primary>
+            <secondary>Unterton (z.B. dringlich, optimistisch, vorsichtig)</secondary>
+            <example>Konkretes Beispiel für den gewünschten Ton</example>
+        </tone>
+        <complexity>
+            <conceptual_depth>Grad der Abstraktion (praktisch/anwendbar ↔ theoretisch/grundlegend)</conceptual_depth>
+            <technical_detail>Technische Detaillierung (High-Level ↔ Low-Level/Implementierung)</technical_detail>
+            <jargon_level>
+                <allow>Erlaubte Fachbegriffe (z.B. "API", "KPIs")</allow>
+                <avoid>Zu vermeidende Begriffe (z.B. Buzzwords, interne Akronyme)</avoid>
+                <define>Immer zu erklärende Begriffe (auch wenn Fachpublikum)</define>
+            </jargon_level>
+        </complexity>
+    </stylistic_parameters>
+
+    <boundaries>
+        <exclusions>
+            <topics>Themen, die NICHT behandelt werden sollen</topics>
+            <approaches>Methoden oder Ansätze, die NICHT verwendet werden sollen</approaches>
+            <assumptions>Annahmen, die NICHT getroffen werden dürfen</assumptions>
+        </exclusions>
+        <limitations>
+            <scope>Umfangseinschränkung (z.B. nur deutsche Märkte, nur Software-Lösungen)</scope>
+            <length>Umfangsangabe (z.B. 500-700 Wörter, max. 3 Hauptpunkte)</length>
+            <time_frame>Zeitlicher Bezug (z.B. aktueller Stand, 5-Jahres-Perspektive)</time_frame>
+        </limitations>
+    </boundaries>
+
+    <quality_assurance>
+        <validation_checkpoints>
+            <checkpoint>Enthält die Antwort eine klare Handlungsempfehlung?</checkpoint>
+            <checkpoint>Sind alle angeforderten Quellen korrekt integriert?</checkpoint>
+            <checkpoint>Entspricht der Ton der Zielgruppe?</checkpoint>
+        </validation_checkpoints>
+        <fallback_instruction>
+            Wenn für die vollständige Bearbeitung essentielle Informationen fehlen,
+            fragen Sie präzise und fokussiert nach dem spezifischen fehlenden Element.
+        </fallback_instruction>
+    </quality_assurance>
+
+    <processing_instruction priority="strict">
+        1. Analysieren Sie alle Abschnitte dieses `<input_structure>` vollständig.
+        2. Erstellen Sie eine interne Aufgabenliste basierend auf den `<validation_checkpoints>`.
+        3. **Wenden Sie NACH der inhaltlichen Erstellung das separat definierte `<output_format version="1.3">` an.**
+        4. Das gewünschte Ausgabeformat für diese Anfrage lautet: [HIER FORMAT EINSETZEN, z.B. structured_markdown].
+        5. Bestätigen Sie vor der Ausgabe kurz (intern), dass alle `<required_elements>` abgedeckt sind.
+    </processing_instruction>
+
+    <meta>
+        <usage_notes>
+            • Pflichtfelder: `<goal>/<primary>`, `<context>/<background>`, `<target_audience>/<primary>`
+            • Optionale Felder können leer gelassen oder entfernt werden
+            • Je spezifischer die Angaben, desto präziser das Ergebnis
+        </usage_notes>
+    </meta>
+</input_structure>
+
+
+
+<output_format version="1.3">
+    <!-- ===================== -->
+    <!-- Output Prompt         -->
+    <!-- Format : XML          -->
+    <!-- Version : 1.3         --> 
+    <!-- Datum   : 17.12.2025  -->
+    <!-- ===================== --> 
+
+    <capability_detection>
+        <can_generate_pdf_directly>false</can_generate_pdf_directly>
+        <can_generate_pdf_ready_markdown>true</can_generate_pdf_ready_markdown>
+        <can_generate_structured_markdown>true</can_generate_structured_markdown>
+        <can_generate_html>true</can_generate_html>
+        <can_generate_plain_text>true</can_generate_plain_text>
+    </capability_detection>
+
+    <selection_rules>
+        <rule priority="1">
+            <condition>format_anforderung = "pdf" UND can_generate_pdf_ready_markdown = true</condition>
+            <action>Wähle pdf_ready_markdown mit PDF-Metadaten</action>
+            <fallback>Regel 2</fallback>
+        </rule>
+        <rule priority="2">
+            <condition>can_generate_structured_markdown = true</condition>
+            <action>Wähle structured_markdown (Standard)</action>
+            <fallback>Regel 3</fallback>
+        </rule>
+        <rule priority="3">
+            <condition>can_generate_html = true UND web_context = true</condition>
+            <action>Wähle html</action>
+            <fallback>Regel 4</fallback>
+        </rule>
+        <rule priority="4">
+            <condition>can_generate_plain_text = true</condition>
+            <action>Wähle plain_text</action>
+            <fallback>Regel 5</fallback>
+        </rule>
+        <rule priority="5">
+            <condition>kein_format_möglich = true</condition>
+            <action>
+                <error>
+                    <message>Kein unterstütztes Ausgabeformat verfügbar</message>
+                    <suggestion>Bitte Markdown oder Plain Text anfordern</suggestion>
+                </error>
+            </action>
+        </rule>
+    </selection_rules>
+
+    <format_definitions>
+        <pdf_ready_markdown>
+            <metadata required="true">
+                ---
+                title: "<TITEL HIER EINFÜGEN>"
+                author: "<AUTOR_HIER EINFÜGEN>"
+                date: "YYYY-MM-DD"
+                geometry: "margin=2.5cm"
+                ---
+            </metadata>
+            <structure>
+                <table_of_contents>[TOC]</table_of_contents>
+                <headings>
+                    <h1># Titel</h1>
+                    <h2>## Kapitel</h2>
+                    <h3>### Unterkapitel</h3>
+                </headings>
+                <page_breaks>
+                    <insert_before>title, table_of_contents, each_chapter</insert_before>
+                </page_breaks>
+            </structure>
+            <content>
+                <tables max_columns="6" max_rows="30" />
+                <code_blocks>
+                    ```language
+                    code
+                    ```
+                </code_blocks>
+                <images>
+                    ![BESCHREIBUNG: detaillierte Bildbeschreibung](image_placeholder.png)
+                </images>
+            </content>
+        </pdf_ready_markdown>
+
+        <structured_markdown>
+            <compliance>GitHub Flavored Markdown</compliance>
+            <structure>
+                <headings>#, ##, ###</headings>
+                <lists>
+                    <unordered>- Item</unordered>
+                    <ordered>1. Item</ordered>
+                </lists>
+                <tables>
+                    | Header 1 | Header 2 |
+                    |----------|----------|
+                    | Cell 1   | Cell 2   |
+                </tables>
+                <code_blocks>
+                    ```python
+                    # Code mit Sprachangabe
+                    ```
+                </code_blocks>
+            </structure>
+            <validation>
+                <max_line_length>120</max_line_length>
+                <no_raw_html>true</no_raw_html>
+                <complete_blocks>true</complete_blocks>
+            </validation>
+        </structured_markdown>
+
+        <html>
+            <doctype>&lt;!DOCTYPE html&gt;</doctype>
+            <structure>
+                &lt;html lang="de"&gt;
+                &lt;head&gt;
+                    &lt;meta charset="UTF-8"&gt;
+                    &lt;title&gt;Titel&lt;/title&gt;
+                    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                    &lt;main&gt;
+                    &lt;!-- Inhalt --&gt;
+                    &lt;/main&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+            </structure>
+            <semantic_elements>
+                <use>header, main, article, section, footer</use>
+                <avoid>div für semantische Blöcke</avoid>
+            </semantic_elements>
+        </html>
+
+        <plain_text>
+            <encoding>UTF-8</encoding>
+            <structure>
+                <headings>
+                    <h1>===== ÜBERSCHRIFT =====</h1>
+                    <h2>----- Unterüberschrift -----</h2>
+                </headings>
+                <separators>--- (3 Bindestriche zwischen Abschnitten)</separators>
+                <lists>
+                    <unordered>- Item</unordered>
+                    <ordered>1. Item</ordered>
+                </lists>
+            </structure>
+            <restrictions>
+                <max_line_length>80</max_line_length>
+                <no_formatting>true</no_formatting>
+                <tabs_to_spaces>true</tabs_to_spaces>
+            </restrictions>
+        </plain_text>
+    </format_definitions>
+
+    <completion_checks>
+        <check>Ist die Ausgabe vollständig?</check>
+        <check>Ist das Format korrekt?</check>
+        <check>Gibt es abgeschnittene Inhalte?</check>
+        <check>Sind alle Platzhalter ersetzt?</check>
+    </completion_checks>
+</output_format>

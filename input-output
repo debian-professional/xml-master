@@ -1,4 +1,5 @@
 <input_structure version="1.3">
+
     <!-- ===================== -->
     <!-- Input Prompt          -->
     <!-- Format : XML          -->
@@ -103,7 +104,8 @@
 
 
 
-<output_format version="1.3">
+<output_structure version="1.3">
+
     <!-- ===================== -->
     <!-- Output Prompt         -->
     <!-- Format : XML          -->
@@ -260,4 +262,4 @@
         <check>Gibt es abgeschnittene Inhalte?</check>
         <check>Sind alle Platzhalter ersetzt?</check>
     </completion_checks>
-</output_format>
+</output_structure>

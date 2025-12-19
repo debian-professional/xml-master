@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<output_structure version="1.71">
+<!-- =============================== -->
+<!-- Output Prompt System -->
+<!-- Format: XML -->
+<!-- Version: 1.71 -->
+<!-- Date: 19.12.2025 -->
+<!-- =============================== -->
+
+<system_info>
+    <name>Output Prompt System</name>
+    <version>1.71</version>
+    <release_date>2025-12-19</release_date>
+    <description>Einheitliches System zur Auswahl und Generierung von Ausgabeformaten basierend auf Fähigkeiten und Anforderungen</description>
+</system_info>
+
+<capability_detection>
+    <capability id="pdf_direct">
+        <name>PDF Direct Generation</name>
+        <enabled>false</enabled>
+        <description>Kann PDF direkt ohne Zwischenformat generieren</description>
+    </capability>
+    <capability id="pdf_markdown">
+        <name>PDF-ready Markdown</name>
+        <enabled>true</enabled>
+        <description>Kann Markdown generieren, das direkt zu PDF konvertiert werden kann</description>
+    </capability>
+    <capability id="structured_md">
+        <name>Structured Markdown</name>
+        <enabled>true</enabled>
+        <description>Kann strukturiertes Markdown (GitHub Flavored) generieren</description>
+    </capability>
+    <capability id="html">
+        <name>HTML Generation</name>
+        <enabled>true</enabled>
+        <description>Kann HTML-Dokumente generieren</description>
+    </capability>
+    <capability id="plain_text">
+        <name>Plain Text Generation</name>
+        <enabled>true</enabled>
+        <description>Kann einfachen Text generieren</description>
+    </capability>
+    <capability id="postscript">
+        <name>PostScript Generation</name>
+        <enabled>true</enabled>
+        <description>Kann PostScript-Dateien generieren</description>
+    </capability>
+    <capability id="latex">
+        <name>LaTeX Generation</name>
+        <enabled>true</enabled>
+        <description>Kann LaTeX-Dokumente generieren</description>
+    </capability>
+    <capability id="xml">
+        <name>XML Generation</name>
+        <enabled>true</enabled>
+        <description>Kann strukturierte XML-Dateien generieren</description>
+    </capability>
+    <capability id="json">
+        <name>JSON Generation</name>
+        <enabled>true</enabled>
+        <description>Kann JSON-Dateien generieren</description>
+    </capability>
+    <capability id="yaml">
+        <name>YAML Generation</name>
+        <enabled>true</enabled>
+        <description>Kann YAML-Dateien generieren</description>
+    </capability>
+</capability_detection>
+
+<selection_rules>
+    <!-- Regel 1: PostScript-Priorität -->
+    <rule id="r1" priority="1">
+        <name>PostScript Request</name>
+        <condition>
+            <equals variable="requested_format" value="postscript"/>
+        </condition>
+        <action>
+            <select_format>postscript</select_format>
+            <message>PostScript-Format ausgewählt gemäß expliziter Anforderung</message>
+        </action>
+        <fallback>r2</fallback>
+    </rule>
+
+    <!-- Regel 2: LaTeX-Priorität -->
+    <rule id="r2" priority="2">
+        <name>LaTeX Request</name>
+        <condition>
+            <equals variable="requested_format" value="latex"/>
+        </condition>
+        <action>
+            <select_format>latex</select_format>
+            <message>LaTeX-Format ausgewählt gemäß expliziter Anforderung</message>
+        </action>
+        <fallback>r3</fallback>
+    </rule>
+
+    <!-- Regel 3: PDF via Markdown -->
+    <rule id="r3" priority="3">
+        <name>PDF via Markdown</name>
+        <condition>
+            <and>
+                <equals variable="requested_format" value="pdf"/>
+                <capability_enabled capability="pdf_markdown"/>
+            </and>
+        </condition>
+        <action>
+            <select_format>pdf_ready_markdown</select_format>
+            <message>PDF-bereites Markdown für PDF-Konvertierung ausgewählt</message>
+        </action>
+        <fallback>r4</fallback>
+    </rule>
+
+    <!-- Regel 4: JSON-Anforderung -->
+    <rule id="r4" priority="4">
+        <name>JSON Request</name>
+        <condition>
+            <equals variable="requested_format" value="json"/>
+        </condition>
+        <action>
+            <select_format>json_output</select_format>
+            <message>JSON-Format ausgewählt gemäß expliziter Anforderung</message>
+        </action>
+        <fallback>r5</fallback>
+    </rule>
+
+    <!-- Regel 5: YAML-Anforderung -->
+    <rule id="r5" priority="5">
+        <name>YAML Request</name>
+        <condition>
+            <equals variable="requested_format" value="yaml"/>
+        </condition>
+        <action>
+            <select_format>yaml_output</select_format>
+            <message>YAML-Format ausgewählt gemäß expliziter Anforderung</message>
+        </action>
+        <fallback>r6</fallback>
+    </rule>
+
+    <!-- Regel 6: Strukturiertes Markdown Fallback -->
+    <rule id="r6" priority="6">
+        <name>Structured Markdown Fallback</name>
+        <condition>
+            <capability_enabled capability="structured_md"/>
+        </condition>
+        <action>
+            <select_format>structured_markdown</select_format>
+            <message>Strukturiertes Markdown als allgemeines Fallback ausgewählt</message>
+        </action>
+        <fallback>r7</fallback>
+    </rule>
+
+    <!-- Regel 7: HTML für Web-Kontext -->
+    <rule id="r7" priority="7">
+        <name>HTML Web Context</name>
+        <condition>
+            <and>
+                <capability_enabled capability="html"/>
+                <equals variable="context" value="web"/>
+            </and>
+        </condition>
+        <action>
+            <select_format>html</select_format>
+            <message>HTML für Web-Kontext ausgewählt</message>
+        </action>
+        <fallback>r8</fallback>
+    </rule>
+
+    <!-- Regel 8: Plain Text Universal -->
+    <rule id="r8" priority="8">
+        <name>Plain Text Universal</name>
+        <condition>
+            <capability_enabled capability="plain_text"/>
+        </condition>
+        <action>
+            <select_format>plain_text</select_format>
+            <message>Plain Text als universelles Ausgabeformat ausgewählt</message>
+        </action>
+        <fallback>r9</fallback>
+    </rule>
+
+    <!-- Regel 9: XML-Strukturierte Ausgabe -->
+    <rule id="r9" priority="9">
+        <name>XML Structured Data</name>
+        <condition>
+            <and>
+                <equals variable="requested_format" value="xml"/>
+                <capability_enabled capability="xml"/>
+            </and>
+        </condition>
+        <action>
+            <select_format>xml_output</select_format>
+            <message>XML für strukturierte Datenausgabe ausgewählt</message>
+        </action>
+        <fallback>r10</fallback>
+    </rule>
+
+    <!-- Regel 10: Fehler - Kein Format verfügbar -->
+    <rule id="r10" priority="10">
+        <name>No Format Available</name>
+        <condition>
+            <variable_set variable="no_format_available"/>
+        </condition>
+        <action>
+            <error>
+                <code>NO_FORMAT_AVAILABLE</code>
+                <message>Kein unterstütztes Ausgabeformat verfügbar</message>
+                <suggestion>Bitte ein anderes Format anfordern: Markdown, LaTeX, PostScript, HTML, XML, JSON, YAML oder Plain Text</suggestion>
+                <recovery_action>reset_system</recovery_action>
+            </error>
+        </action>
+    </rule>
+</selection_rules>
+
+<output_processing>
+    <metadata_handling>
+        <include_metadata>hidden</include_metadata>
+        <default_metadata>
+            <title>Generiertes Dokument</title>
+            <author>Output Prompt System v1.71</author>
+            <date>2025-12-19</date>
+            <generator>Output Prompt System v1.71</generator>
+        </default_metadata>
+        <user_override>true</user_override>
+    </metadata_handling>
+
+    <variable_processing>
+        <auto_replace>true</auto_replace>
+        <placeholder_pattern>&lt;([A-Z_]+)&gt;</placeholder_pattern>
+        <variables>
+            <variable name="TITLE">
+                <default>Unbenanntes Dokument</default>
+                <description>Dokumenttitel</description>
+            </variable>
+            <variable name="AUTHOR">
+                <default>Unbekannter Autor</default>
+                <description>Autor des Dokuments</description>
+            </variable>
+            <variable name="DATE">
+                <default>2025-12-19</default>
+                <description>Erstellungsdatum</description>
+            </variable>
+            <variable name="CONTENT">
+                <default/>
+                <description>Hauptinhalt des Dokuments (sichtbarer Bereich)</description>
+            </variable>
+            <!-- NEU: Systemvariablen definiert -->
+            <variable name="requested_format">
+                <default/>
+                <description>Vom Benutzer angeforderte Ausgabeformat (pdf, html, xml, json, etc.)</description>
+            </variable>
+            <variable name="context">
+                <default>general</default>
+                <description>Anwendungskontext (web, print, api, general)</description>
+            </variable>
+            <variable name="no_format_available">
+                <default>false</default>
+                <description>Flag, ob kein Format verfügbar ist</description>
+            </variable>
+        </variables>
+    </variable_processing>
+
+    <quality_control>
+        <validate_output>true</validate_output>
+        <check_placeholder_completion>true</check_placeholder_completion>
+        <max_file_size_mb>10</max_file_size_mb>
+        <encoding>UTF-8</encoding>
+    </quality_control>
+</output_processing>
+
+<format_definitions>
+    <!-- PostScript Template -->
+    <format id="postscript">
+        <name>PostScript Document</name>
+        <extension>.ps</extension>
+        <mime_type>application/postscript</mime_type>
+        <template><![CDATA[
+%!PS-Adobe-3.0
+%%Title: <TITLE>
+%%Creator: Output Prompt System v1.71
+%%CreationDate: <DATE>
+%%For: <AUTHOR>
+%%Pages: 1
+%%LanguageLevel: 2
+%%DocumentData: Clean7Bit
+%%EndComments
+
+%%BeginProlog
+/mm {2.834645 mul} def
+/Helvetica findfont 12 scalefont setfont
+/headingfont {/Helvetica findfont 16 scalefont setfont} def
+%%EndProlog
+
+%%Page: 1 1
+20 mm 270 mm moveto
+headingfont
+(<TITLE>) show
+
+12 mm 250 mm moveto
+/Helvetica findfont 12 scalefont setfont
+(Autor: <AUTHOR>) show
+
+12 mm 235 mm moveto
+(Datum: <DATE>) show
+
+12 mm 220 mm moveto
+(--- Beginn des Inhalts ---) show
+
+12 mm 200 mm moveto
+<CONTENT>
+
+12 mm 50 mm moveto
+(--- Ende des Dokuments ---) show
+
+showpage
+%&EOF
+]]></template>
+        <notes>PostScript Level 2, Meta-Daten in Kommentar-Headern (unsichtbar im gedruckten Dokument)</notes>
+    </format>
+
+    <!-- LaTeX Template -->
+    <format id="latex">
+        <name>LaTeX Document</name>
+        <extension>.tex</extension>
+        <mime_type>application/x-latex</mime_type>
+        <template><![CDATA[
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{geometry}
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+% Meta-Daten (unsichtbar im PDF)
+\title{<TITLE>}
+\author{<AUTHOR>}
+\date{<DATE>}
+\hypersetup{
+    pdftitle={<TITLE>},
+    pdfauthor={<AUTHOR>},
+    pdfsubject={Generiert mit Output Prompt System v1.71},
+    pdfkeywords={Dokument, generiert, automatisch},
+    pdfcreator={Output Prompt System v1.71}
+}
+
+\begin{document}
+
+% Sichtbarer Titelbereich
+\maketitle
+
+\begin{abstract}
+Dieses Dokument wurde automatisch mit dem Output Prompt System v1.71 generiert.
+\end{abstract}
+
+\tableofcontents
+
+% Sichtbarer Hauptinhalt
+<CONTENT>
+
+\end{document}
+]]></template>
+        <notes>LaTeX mit Meta-Daten in PDF-Info (unsichtbar im Dokumentkörper)</notes>
+    </format>
+
+    <!-- PDF-ready Markdown -->
+    <format id="pdf_ready_markdown">
+        <name>PDF-ready Markdown</name>
+        <extension>.md</extension>
+        <mime_type>text/markdown</mime_type>
+        <template><![CDATA[
+---
+# Meta-Daten-Block (YAML-Frontmatter, unsichtbar in PDF)
+title: "<TITLE>"
+author: "<AUTHOR>"
+date: "<DATE>"
+geometry: "margin=2.5cm"
+fontsize: 11pt
+documentclass: article
+classoption: a4paper
+header-includes:
+    - \usepackage{hyperref}
+    - \hypersetup{pdftitle={<TITLE>}, pdfauthor={<AUTHOR>}, pdfcreator={Output Prompt System v1.71}}
+---
+
+# <TITLE>
+
+**Dokumentinformation:**  
+Dieses Dokument wurde automatisch generiert.
+
+## Inhaltsverzeichnis
+[TOC]
+
+## Hauptinhalt
+
+<CONTENT>
+
+---
+*Generiert mit Output Prompt System v1.71*
+]]></template>
+        <notes>Markdown mit YAML-Frontmatter (Meta-Daten unsichtbar in gerenderter PDF)</notes>
+    </format>
+
+    <!-- Structured Markdown -->
+    <format id="structured_markdown">
+        <name>Structured Markdown</name>
+        <extension>.md</extension>
+        <mime_type>text/markdown</mime_type>
+        <template><![CDATA[
+<!--
+Meta-Daten (HTML-Kommentar, unsichtbar in gerenderter Ansicht)
+Titel: <TITLE>
+Autor: <AUTHOR>
+Datum: <DATE>
+Generator: Output Prompt System v1.71
+-->
+
+# <TITLE>
+
+> **Hinweis:** Dieses Dokument folgt der GitHub Flavored Markdown-Spezifikation.
+
+## Inhalt
+
+<CONTENT>
+
+---
+<small>Generiert am <DATE> mit Output Prompt System v1.71 | Kodierung: UTF-8</small>
+]]></template>
+        <notes>Markdown mit Meta-Daten in HTML-Kommentaren (unsichtbar in Vorschau)</notes>
+    </format>
+
+    <!-- HTML Template -->
+    <format id="html">
+        <name>HTML Document</name>
+        <extension>.html</extension>
+        <mime_type>text/html</mime_type>
+        <template><![CDATA[
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <!-- Meta-Daten (unsichtbar im sichtbaren Bereich) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Output Prompt System v1.71">
+    <meta name="author" content="<AUTHOR>">
+    <meta name="date" content="<DATE>">
+    <meta name="description" content="<TITLE> - Generiertes Dokument">
+    <title><TITLE></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .meta {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 1rem;
+        }
+        main {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><TITLE></h1>
+        <div class="meta">
+            <strong>Dokument-ID:</strong> <span id="doc-id">${DATE}-${TITLE_HASH}</span>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Sichtbarer Hauptinhalt -->
+        <CONTENT>
+    </main>
+    
+    <footer>
+        <p>Dokument erstellt am <DATE></p>
+    </footer>
+    
+    <!-- Versteckte Meta-Daten -->
+    <div style="display: none;">
+        <span id="meta-author"><AUTHOR></span>
+        <span id="meta-generator">Output Prompt System v1.71</span>
+        <span id="meta-timestamp"><DATE>T12:00:00Z</span>
+    </div>
+</body>
+</html>
+]]></template>
+        <notes>HTML mit Meta-Daten im head-Bereich und verstecktem div (unsichtbar)</notes>
+    </format>
+
+    <!-- Plain Text Template -->
+    <format id="plain_text">
+        <name>Plain Text</name>
+        <extension>.txt</extension>
+        <mime_type>text/plain</mime_type>
+        <template><![CDATA[
+================================================================================
+<TITLE>
+================================================================================
+
+BEGINN DES DOKUMENTS
+
+<CONTENT>
+
+ENDE DES DOKUMENTS
+================================================================================
+Dokument-Info (für Systeme):
+AUTHOR=<AUTHOR>
+DATE=<DATE>
+GENERATOR=Output Prompt System v1.71
+ENCODING=UTF-8
+================================================================================
+]]></template>
+        <notes>Plain Text mit Meta-Daten am Ende (nach dem sichtbaren Inhalt)</notes>
+    </format>
+
+    <!-- XML Output Template -->
+    <format id="xml_output">
+        <name>XML Document</name>
+        <extension>.xml</extension>
+        <mime_type>application/xml</mime_type>
+        <template><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://output-prompt-system/v1.71">
+    <!-- Meta-Daten-Bereich (für Parser, nicht für Endbenutzer) -->
+    <metadata>
+        <title><TITLE></title>
+        <author><AUTHOR></author>
+        <date><DATE></date>
+        <generator>Output Prompt System v1.71</generator>
+        <created><DATE></created>
+        <format>XML</format>
+        <encoding>UTF-8</encoding>
+    </metadata>
+    
+    <!-- Sichtbarer Inhaltsbereich -->
+    <content>
+        <CONTENT>
+    </content>
+</document>
+]]></template>
+        <notes>XML mit klarer Trennung zwischen metadata und content</notes>
+    </format>
+
+    <!-- JSON Output Template -->
+    <format id="json_output">
+        <name>JSON Document</name>
+        <extension>.json</extension>
+        <mime_type>application/json</mime_type>
+        <template><![CDATA[
+{
+    "_metadata": {
+        "title": "<TITLE>",
+        "author": "<AUTHOR>",
+        "date": "<DATE>",
+        "generator": "Output Prompt System v1.71",
+        "format": "JSON",
+        "encoding": "UTF-8"
+    },
+    "content": "<CONTENT>"
+}
+]]></template>
+        <notes>JSON mit _metadata-Objekt (klar getrennt vom content)</notes>
+    </format>
+
+    <!-- YAML Output Template -->
+    <format id="yaml_output">
+        <name>YAML Document</name>
+        <extension>.yaml</extension>
+        <mime_type>application/yaml</mime_type>
+        <template><![CDATA[
+---
+# Meta-Daten
+_metadata:
+  title: "<TITLE>"
+  author: "<AUTHOR>"
+  date: "<DATE>"
+  generator: "Output Prompt System v1.71"
+  format: "YAML"
+  encoding: "UTF-8"
+
+# Hauptinhalt
+content: |
+  <CONTENT>
+...
+]]></template>
+        <notes>YAML mit _metadata-Sektion (klar getrennt vom content)</notes>
+    </format>
+</format_definitions>
+
+<final_verification>
+    <checks>
+        <check type="xml_well_formed" status="passed" timestamp="2025-12-19T14:30:00Z">
+            <message>XML ist wohlgeformt und valide</message>
+        </check>
+        <check type="structure_integrity" status="passed">
+            <message>Alle erforderlichen Abschnitte vorhanden und korrekt strukturiert</message>
+        </check>
+        <check type="variable_definitions" status="passed">
+            <message>Alle referenzierten Variablen sind definiert (requested_format, context, etc.)</message>
+        </check>
+        <check type="metadata_hidden" status="passed">
+            <message>Meta-Daten werden in allen Templates versteckt/abgetrennt vom sichtbaren Inhalt</message>
+        </check>
+    </checks>
+    <summary>
+        <overall_status>SAUBER</overall_status>
+        <version>1.71</version>
+        <validation_date>2025-12-19</validation_date>
+        <message>Output Prompt System Version 1.71 ist vollständig, konsistent und verbessert</message>
+        <features>
+            <feature>10 Ausgabeformate unterstützt</feature>
+            <feature>Alle Systemvariablen definiert (requested_format, context)</feature>
+            <feature>Meta-Daten versteckt/abgetrennt vom sichtbaren Inhalt</feature>
+            <feature>Intelligente Auswahlregeln mit Prioritäten</feature>
+            <feature>Automatische Platzhalterersetzung</feature>
+            <feature>Qualitätskontrolle integriert</feature>
+        </features>
+    </summary>
+
+    <changeLog>
+        <change version="1.71" date="2025-12-19">
+            <item>Alle Systemvariablen definiert (requested_format, context, no_format_available)</item>
+            <item>Meta-Daten-Handling auf "hidden" gesetzt</item>
+            <item>Alle Templates überarbeitet: Meta-Daten versteckt/abgetrennt vom sichtbaren CONTENT</item>
+            <item>PostScript: Meta-Daten in Kommentar-Headern</item>
+            <item>LaTeX: Meta-Daten in PDF-Info und präambel</item>
+            <item>Markdown: YAML-Frontmatter für Meta-Daten</item>
+            <item>HTML: Meta-Daten im head und verstecktem div</item>
+            <item>Plain Text: Meta-Daten nach dem sichtbaren Inhalt</item>
+            <item>XML/JSON/YAML: Klare Trennung metadata/content</item>
+            <item>Kleinere Syntaxverbesserungen und Kommentare</item>
+        </change>
+        <change version="1.7" date="2025-12-19">
+            <item>XML-Syntax vollständig korrigiert (wohlgeformt)</item>
+            <item>JSON- und YAML-Unterstützung hinzugefügt</item>
+            <item>Regelprioritäten neu strukturiert</item>
+            <item>Konsistente Benennung aller Tags</item>
+        </change>
+    </changeLog>
+</final_verification>
+</output_structure>

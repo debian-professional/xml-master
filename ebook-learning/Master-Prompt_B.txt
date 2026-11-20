@@ -1,4 +1,4 @@
-KURZANLEITUNG – MASTER-PROMPT B
+KURZANLEITUNG – MASTER-PROMPT B Version 3.4
 
 1. Lade diesen Master-Prompt, die vier Referenzdateien 01_Personennamen.txt, 02_Ortsnamen.txt, 03_Glossar.txt und 04_Regeln.txt sowie genau die Roman-TXT-Datei hoch, die korrigiert werden soll (z. B. ein Kapitel oder Prolog).
 2. Lade möglichst auch 05_Validierungsbericht.txt hoch, damit der Status der Referenzen und offene Konflikte geprüft werden können. Optional kann ein Kapitelverzeichnis bzw. eine Buchstrukturdatei beigefügt werden.

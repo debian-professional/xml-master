@@ -1,4 +1,4 @@
-KURZANLEITUNG – MASTER-PROMPT A 
+KURZANLEITUNG – MASTER-PROMPT A Version 3.4
 
 1. Lade diesen Master-Prompt und die vollständige Roman-TXT-Datei in denselben Chat hoch.
 2. Schreibe „Arbeitsschritt 1“. Du erhältst die Bestandsaufnahme, ein Kapitelverzeichnis und ein ZIP mit getrennten, noch unkorrigierten Kapitel-TXT-Dateien.
